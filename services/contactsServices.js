@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { nanoid } from "nanoid";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname("../", __filename);
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
 export async function updateContacts(contactId) {
@@ -29,10 +29,10 @@ export async function listContacts() {
   }
 }
 
-export async function getContactById(contactId) {
+export async function getContactById(Id) {
   try {
     const contacts = await listContacts();
-    const contact = contacts.find(contact => contact.id === contactId);
+    const contact = contacts.find(contact => contact.id === Id);
     return contact || null;
     
   } catch (error) {
