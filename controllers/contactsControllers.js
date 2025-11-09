@@ -11,7 +11,19 @@ export const getAllContacts = async (req, res, next) => {
   };
 };
 
-export const getOneContact = (req, res) => {};
+export const getOneContact = async (req, res, next)=> {
+    try {
+        const {id} = req.params;
+        const result = await moviesServices.getMovieById(id);
+        if(!result) {
+            throw HttpError(404, `Contact with id=${id} not found`);
+        }
+        res.json(result);
+    }
+    catch(error) {
+        next(error);
+    }
+};
 
 export const deleteContact = (req, res) => {};
 
