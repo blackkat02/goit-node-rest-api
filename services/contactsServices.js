@@ -3,7 +3,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { nanoid } from "nanoid";
 
-const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const contactsPath = path.join(__dirname, "..", "db", "contacts.json");
 

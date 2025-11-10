@@ -8,7 +8,7 @@ import {
 export const getAllContacts = async (req, res, next) => {
   try {
     const contacts = await contactsServices.listContacts();
-    res.json(contacts);
+    res.status(200).json(contacts);
   } catch (error) {
     next(error);
   }
@@ -21,31 +21,27 @@ export const getOneContact = async (req, res, next) => {
     if (!result) {
       throw HttpError(404, `Contact with id=${id} not found`);
     }
-    res.json(result);
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
 };
 
-export const deleteContact = async(req, res, next)=> {
-    try {
-        const {id} = req.params;
-        const result = await contactsServices.removeContact(id);
-        if(!result) {
-            throw HttpError(404, `Contact with id=${id} not found`);
-        }
-        res.json({
-            message: "Delete success"
-        })
+export const deleteContact = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await contactsServices.removeContact(id);
+    if (!result) {
+      throw HttpError(404, `Contact with id=${id} not found`);
     }
-    catch(error) {
-        next(error);
-    }
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const createContact = async (req, res, next) => {
   try {
-    console.log(req.params);
     const { error } = createContactSchema.validate(req.body);
     if (error) {
       throw HttpError(400, error.message);
@@ -58,22 +54,21 @@ export const createContact = async (req, res, next) => {
   }
 };
 
-export const updateContact = async(req, res, next)=> {
-    try {
-        const {error} = updateContactSchema.validate(req.body);
-        if(error) {
-            throw HttpError(400, error.message);
-        }
-
-        const {id} = req.params;
-        const result = await contactsServices.updateContactById(id, req.body);
-        if(!result) {
-            throw HttpError(404, `Contact with id=${id} not found`);
-        }
-
-        res.json(result);
+export const updateContact = async (req, res, next) => {
+  try {
+    const { error } = updateContactSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
     }
-    catch(error) {
-        next(error);
+
+    const { id } = req.params;
+    const result = await contactsServices.updateContactById(id, req.body);
+    if (!result) {
+      throw HttpError(404, `Contact with id=${id} not found`);
     }
+
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 };
