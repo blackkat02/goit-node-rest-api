@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = NodeJS.Require("sequelize");
-const sequelize = new Sequelize("sqlite::memory:");
+import sequelize from "../db/connectDB.js";
 
 const Contact = sequelize.define("contact", {
   name: {
@@ -19,3 +19,7 @@ const Contact = sequelize.define("contact", {
     defaultValue: false,
   },
 });
+
+Contact.sync();
+
+export default Contact;

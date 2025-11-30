@@ -16,6 +16,4 @@ const sequelize = new Sequelize({
   logging: false,
 });
 
-console.log(process.env.DATABASE_DIALECT, process.env.DATABASE_USER);
-
 export default sequelize;

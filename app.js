@@ -24,29 +24,29 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-await connectDB();
+// await connectDB();
 
-const port = Number(process.env.PORT) | 3000;
+// const port = Number(process.env.PORT) | 3000;
 
-app.listen(port, () => {
-  console.log("Server is running. Use our API on port: 3000");
-});
+// app.listen(port, () => {
+//   console.log("Server is running. Use our API on port: 3000");
+// });
 
-console.log(process.env.DATABASE_DIALECT, process.env.DATABASE_USER);
+// console.log(process.env.DATABASE_DIALECT, process.env.DATABASE_USER);
 
-// const startServer = async () => {
-//   try {
-//     await connectDB();
+const startServer = async () => {
+  try {
+    await connectDB();
 
-//     const { PORT = 3000 } = process.env;
+    const { PORT = 3000 } = process.env;
 
-//     app.listen(PORT, () => {
-//       console.log(`Server is running on port: ${PORT}`);
-//     });
-//   } catch (error) {
-//     console.error("Помилка при запуску сервера:", error);
-//     process.exit(1);
-//   }
-// };
+    app.listen(PORT, () => {
+      console.log(`Server is running on port: ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Помилка при запуску сервера:", error);
+    process.exit(1);
+  }
+};
 
-// startServer();
+startServer();
