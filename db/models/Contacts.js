@@ -1,5 +1,6 @@
-const { Sequelize, DataTypes } = NodeJS.Require("sequelize");
-import sequelize from "../db/connectDB.js";
+import { Schema, model } from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../sequelize.js";
 
 const Contact = sequelize.define("contact", {
   name: {
