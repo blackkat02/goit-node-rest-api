@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize({
   dialect: process.env.DATABASE_DIALECT,
-  username: process.env.DATABASE_USERNAME,
+  username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   host: process.env.DATABASE_HOST,
   database: process.env.DATABASE_NAME,
@@ -15,5 +15,7 @@ const sequelize = new Sequelize({
   },
   logging: false,
 });
+
+console.log(process.env.DATABASE_DIALECT, process.env.DATABASE_USER);
 
 export default sequelize;

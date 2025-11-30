@@ -32,6 +32,8 @@ app.listen(port, () => {
   console.log("Server is running. Use our API on port: 3000");
 });
 
+console.log(process.env.DATABASE_DIALECT, process.env.DATABASE_USER);
+
 // const startServer = async () => {
 //   try {
 //     await connectDB();
