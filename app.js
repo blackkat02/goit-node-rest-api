@@ -13,6 +13,13 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    return res.status(400).json({ message: "Invalid JSON format" });
+  }
+  next(err);
+});
+
 app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
@@ -23,16 +30,6 @@ app.use((err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;
   res.status(status).json({ message });
 });
-
-// await connectDB();
-
-// const port = Number(process.env.PORT) | 3000;
-
-// app.listen(port, () => {
-//   console.log("Server is running. Use our API on port: 3000");
-// });
-
-// console.log(process.env.DATABASE_DIALECT, process.env.DATABASE_USER);
 
 const startServer = async () => {
   try {
