@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-app.use("/api/users", authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
