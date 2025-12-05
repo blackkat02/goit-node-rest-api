@@ -3,6 +3,7 @@ import HttpError from "../helpers/HttpError.js";
 import {
   createContactSchema,
   updateContactSchema,
+  updateFavoriteSchema,
 } from "../schemas/contactsSchemas.js";
 
 export const getAllContacts = async (req, res, next) => {
@@ -68,6 +69,27 @@ export const updateContact = async (req, res, next) => {
     }
 
     res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateStatusContact = async (req, res, next) => {
+  try {
+    const { error } = updateFavoriteSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
+
+    const { id } = req.params;
+
+    const result = await contactsServices.updateContactFavorite(id, req.body);
+
+    if (!result) {
+      throw HttpError(404, "Not found");
+    }
+
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
