@@ -4,8 +4,13 @@ import cors from "cors";
 import "dotenv/config";
 
 import connectDB from "./db/connectDB.js";
+import { initAssociations } from "./db/associations.js";
 
+import authRouter from "./routes/authRouter.js";
 import contactsRouter from "./routes/contactsRouter.js";
+
+import User from "./db/models/User.js";
+import Contact from "./db/models/Contacts.js";
 
 const app = express();
 
@@ -20,6 +25,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+app.use("/api/users", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
@@ -34,6 +40,11 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     await connectDB();
+
+    await User.sync({ alter: true });
+    await Contact.sync({ alter: true });
+
+    initAssociations();
 
     const { PORT = 3000 } = process.env;
 
