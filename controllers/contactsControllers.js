@@ -64,7 +64,11 @@ export const updateContact = async (req, res, next) => {
     const { id: owner } = req.user;
     const { id } = req.params;
 
-    const result = await contactsService.updateContactById(id, owner, req.body);
+    const result = await contactsServices.updateContactById(
+      id,
+      owner,
+      req.body
+    );
 
     if (!result) {
       throw HttpError(404, "Not found");
@@ -80,7 +84,11 @@ export const updateStatusContact = async (req, res, next) => {
     const { id: owner } = req.user;
     const { id } = req.params;
 
-    const result = await contactsService.updateContactById(id, owner, req.body);
+    const result = await contactsServices.updateContactById(
+      id,
+      owner,
+      req.body
+    );
 
     if (!result) {
       throw HttpError(404, "Not found");
