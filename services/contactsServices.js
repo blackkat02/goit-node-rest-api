@@ -1,17 +1,21 @@
 import Contact from "../db/models/Contacts.js";
 
-export async function listContacts() {
-  const contacts = await Contact.findAll();
+export async function listContacts(owner) {
+  const contacts = await Contact.findAll({ where: { owner } });
   return contacts;
 }
 
-export async function getContactById(contactId) {
-  const contact = await Contact.findByPk(contactId);
-  return contact;
+export async function getContactById(contactId, owner) {
+  return await Contact.findOne({
+    where: {
+      id: contactId,
+      owner,
+    },
+  });
 }
 
-export async function removeContact(contactId) {
-  const contact = await Contact.findByPk(contactId);
+export async function removeContact(contactId, owner) {
+  const contact = await getContactById(contactId, owner);
   if (!contact) return null;
 
   await contact.destroy();
@@ -23,16 +27,15 @@ export const addContact = async (payload) => {
   return newContact;
 };
 
-export const updateContactById = async (contactId, payload) => {
-  const contact = await Contact.findByPk(contactId);
-
+export const updateContactById = async (contactId, owner, data) => {
+  const contact = await getContactById(contactId, owner);
   if (!contact) return null;
 
-  return await contact.update(payload);
+  return await contact.update(data);
 };
 
-export async function updateContactFavorite(id, payload) {
-  const contact = await Contact.findByPk(id);
+export async function updateContactFavorite(contactId, owner, payload) {
+  const contact = await Contact.findByPk(contactId, owner);
   if (!contact) return null;
 
   await contact.update(payload);

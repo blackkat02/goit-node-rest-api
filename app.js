@@ -4,8 +4,13 @@ import cors from "cors";
 import "dotenv/config";
 
 import connectDB from "./db/connectDB.js";
+import { initAssociations } from "./db/associations.js";
 
+import authRouter from "./routes/authRouter.js";
 import contactsRouter from "./routes/contactsRouter.js";
+
+import User from "./db/models/User.js";
+import Contact from "./db/models/Contacts.js";
 
 const app = express();
 
@@ -20,6 +25,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
@@ -35,13 +41,18 @@ const startServer = async () => {
   try {
     await connectDB();
 
+    await User.sync({ alter: true });
+    await Contact.sync({ alter: true });
+
+    initAssociations();
+
     const { PORT = 3000 } = process.env;
 
     app.listen(PORT, () => {
       console.log(`Server is running on port: ${PORT}`);
     });
   } catch (error) {
-    console.error("Помилка при запуску сервера:", error);
+    console.error("Failed to start server:", error);
     process.exit(1);
   }
 };
