@@ -1,12 +1,7 @@
 import * as contactsServices from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
-import {
-  createContactSchema,
-  updateContactSchema,
-  updateFavoriteSchema,
-} from "../schemas/contactsSchemas.js";
 
-export const getAllContacts = async (req, res, next) => {
+export async function getAllContacts(req, res, next) {
   try {
     const { id: owner } = req.user;
     const result = await contactsServices.listContacts(owner);
@@ -14,8 +9,8 @@ export const getAllContacts = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-export const getOneContact = async (req, res, next) => {
+}
+export async function getOneContact(req, res, next) {
   try {
     const { id: owner } = req.user;
     const { id } = req.params;
@@ -29,9 +24,9 @@ export const getOneContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const deleteContact = async (req, res, next) => {
+export async function deleteContact(req, res, next) {
   try {
     const { id: owner } = req.user;
     const { id } = req.params;
@@ -45,9 +40,9 @@ export const deleteContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const createContact = async (req, res, next) => {
+export async function createContact(req, res, next) {
   try {
     const { id: owner } = req.user;
 
@@ -57,9 +52,9 @@ export const createContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const updateContact = async (req, res, next) => {
+export async function updateContact(req, res, next) {
   try {
     const { id: owner } = req.user;
     const { id } = req.params;
@@ -77,9 +72,9 @@ export const updateContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-export const updateStatusContact = async (req, res, next) => {
+export async function updateStatusContact(req, res, next) {
   try {
     const { id: owner } = req.user;
     const { id } = req.params;
@@ -97,4 +92,4 @@ export const updateStatusContact = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
