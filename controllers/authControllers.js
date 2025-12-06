@@ -57,3 +57,21 @@ export async function getCurrentUser(req, res, next) {
     next(error);
   }
 }
+
+export async function updateAvatar(req, res, next) {
+  try {
+    if (!req.file) {
+      throw HttpError(400, "Avatar file is required");
+    }
+
+    const { id } = req.user;
+
+    const avatarURL = await authServices.updateUserAvatar(id, req.file);
+
+    res.status(200).json({
+      avatarURL,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
