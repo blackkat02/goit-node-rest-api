@@ -1,4 +1,5 @@
 import * as authServices from "../services/authServices.js";
+import HttpError from "../helpers/HttpError.js";
 
 export async function register(req, res, next) {
   try {
