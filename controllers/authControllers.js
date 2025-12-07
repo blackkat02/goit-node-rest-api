@@ -9,6 +9,7 @@ export async function register(req, res, next) {
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
@@ -27,6 +28,7 @@ export async function login(req, res, next) {
       user: {
         email: user.email,
         subscription: user.subscription,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
