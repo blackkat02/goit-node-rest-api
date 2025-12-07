@@ -1,4 +1,5 @@
 import * as authServices from "../services/authServices.js";
+import HttpError from "../helpers/HttpError.js";
 
 export async function register(req, res, next) {
   try {
@@ -8,6 +9,7 @@ export async function register(req, res, next) {
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
@@ -26,6 +28,7 @@ export async function login(req, res, next) {
       user: {
         email: user.email,
         subscription: user.subscription,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
@@ -52,6 +55,24 @@ export async function getCurrentUser(req, res, next) {
     res.json({
       email,
       subscription,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateAvatar(req, res, next) {
+  try {
+    if (!req.file) {
+      throw HttpError(400, "Avatar file is required");
+    }
+
+    const { id } = req.user;
+
+    const avatarURL = await authServices.updateUserAvatar(id, req.file);
+
+    res.status(200).json({
+      avatarURL,
     });
   } catch (error) {
     next(error);
