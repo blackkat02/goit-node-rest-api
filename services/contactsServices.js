@@ -22,17 +22,17 @@ export async function removeContact(contactId, owner) {
   return contact;
 }
 
-export const addContact = async (payload) => {
+export async function addContact(payload) {
   const newContact = await Contact.create(payload);
   return newContact;
-};
+}
 
-export const updateContactById = async (contactId, owner, data) => {
+export async function updateContactById(contactId, owner, data) {
   const contact = await getContactById(contactId, owner);
   if (!contact) return null;
 
   return await contact.update(data);
-};
+}
 
 export async function updateContactFavorite(contactId, owner, payload) {
   const contact = await Contact.findByPk(contactId, owner);
