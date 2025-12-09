@@ -28,7 +28,7 @@ export async function login(req, res, next) {
       user: {
         email: user.email,
         subscription: user.subscription,
-        avatarURL: newUser.avatarURL,
+        avatarURL: user.avatarURL,
       },
     });
   } catch (error) {

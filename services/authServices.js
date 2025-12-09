@@ -18,33 +18,6 @@ export async function findUserByEmail(email) {
   return await User.findOne({ where: { email } });
 }
 
-// export async function registerUser(payload) {
-//   const { email, password } = payload;
-
-//   const user = await findUserByEmail(email);
-//   if (user) {
-//     throw HttpError(409, "Email in use");
-//   }
-
-//   const hashPassword = await bcrypt.hash(password, 10);
-
-//   const avatarURL = gravatar.url(
-//     email,
-//     {
-//       s: "200",
-//       r: "pg",
-//       d: "retro",
-//     },
-//     true
-//   );
-
-//   return await User.create({
-//     ...payload,
-//     password: hashPassword,
-//     avatarURL,
-//   });
-// }
-
 export async function registerUser(payload) {
   const { email, password } = payload;
 
@@ -59,7 +32,6 @@ export async function registerUser(payload) {
     { s: "200", r: "pg", d: "retro" },
     true
   );
-
   const verificationToken = uuidv4();
 
   const newUser = await User.create({
@@ -69,13 +41,18 @@ export async function registerUser(payload) {
     verificationToken,
   });
 
-  const verifyEmail = {
-    to: email,
-    subject: "Verify your email",
-    html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
-  };
+  try {
+    const verifyEmail = {
+      to: email,
+      subject: "Verify your email",
+      html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
+    };
 
-  await sendEmail(verifyEmail);
+    await sendEmail(verifyEmail);
+  } catch (error) {
+    await User.destroy({ where: { id: newUser.id } });
+    throw error;
+  }
 
   return newUser;
 }
@@ -86,13 +63,13 @@ export async function loginUser(email, password) {
     throw HttpError(401, "Email or password is wrong");
   }
 
+  if (!user.verify) {
+    throw HttpError(401, "Email is not verified");
+  }
+
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
     throw HttpError(401, "Email or password is wrong");
-  }
-
-  if (!user.verify) {
-    throw HttpError(401, "Email is not verified");
   }
 
   const payload = { id: user.id };

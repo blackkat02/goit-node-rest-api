@@ -13,6 +13,6 @@ export const loginSchema = Joi.object({
 
 export const emailSchema = Joi.object({
   email: Joi.string().email().required().messages({
-    "any.required": "missing required field email", // Вимога ТЗ
+    "any.required": "missing required field email",
   }),
 });
