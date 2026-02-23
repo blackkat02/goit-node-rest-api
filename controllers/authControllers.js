@@ -28,7 +28,7 @@ export async function login(req, res, next) {
       user: {
         email: user.email,
         subscription: user.subscription,
-        avatarURL: newUser.avatarURL,
+        avatarURL: user.avatarURL,
       },
     });
   } catch (error) {
@@ -73,6 +73,34 @@ export async function updateAvatar(req, res, next) {
 
     res.status(200).json({
       avatarURL,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function verifyEmail(req, res, next) {
+  try {
+    const { verificationToken } = req.params;
+
+    await authServices.verifyUserEmail(verificationToken);
+
+    res.json({
+      message: "Verification successful",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function resendVerifyEmail(req, res, next) {
+  try {
+    const { email } = req.body;
+
+    await authServices.resendVerifyEmail(email);
+
+    res.json({
+      message: "Verification email sent",
     });
   } catch (error) {
     next(error);
